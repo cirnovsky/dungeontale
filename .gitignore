@@ -1,2 +1,9 @@
+obj/
+*.o
+dungeontale
+
+*.swp
+*~
+
 **/*.DS_Store
 tags
