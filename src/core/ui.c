@@ -6,6 +6,7 @@ WINDOW *win_main;
 WINDOW *win_log;
 
 void ui_init() {
+    map_init();
     initscr();
     cbreak();
     noecho();

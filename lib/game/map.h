@@ -19,7 +19,7 @@ Map *map_create(int rooms_n, int height, int width);
 void map_destroy(Map *map);
 void map_set(Map *map, int x, int y, int code);
 Tile *map_get_tile(Map *map, int x, int y);
-
+void map_init();
 void map_draw();
 int map_is_walkable(int y, int x);
 
