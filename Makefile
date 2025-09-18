@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -Ilib
+CFLAGS = -Wall -Wextra -std=c99 -g -Ilib
 LDFLAGS = -lncurses 
 
 SRC_FILES = $(wildcard src/**/*.c src/*.c)

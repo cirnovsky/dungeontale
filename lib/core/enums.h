@@ -7,7 +7,9 @@ enum Tiles {
 	TILE_EMPTY = 0,
 	TILE_WALL,
 	TILE_ROOM,
-	TILE_CORRIDOR
+	TILE_CORRIDOR,
+	TILE_ON,
+	TILE_OFF
 };
 
 #endif
