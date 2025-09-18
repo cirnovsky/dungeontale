@@ -11,6 +11,9 @@ typedef struct {
 	int width, height;
 	int start;
 	Tile *tiles;
+//详见room.c的改动
+    int x;
+    int y;
 } Room;
 
 Room *room_create(int width, int height, int start_x, int start_y);
