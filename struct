@@ -1,0 +1,41 @@
+dungeontale/
+├── src/
+│   ├── core/
+│   │   ├── map/
+│   │   │   ├── map.c
+│   │   │   ├── map.h
+│   │   │   ├── tile.c
+│   │   │   └── tile.h
+│   │   │
+│   │   ├── entities/
+│   │   │   ├── entity.c
+│   │   │   └── entity.h
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── rng.c
+│   │   │   ├── rng.h
+│   │   │   ├── geometry.c
+│   │   │   ├── geometry.h
+│   │   │   └── logger.h
+│   │   │
+│   │   └── game.c
+│   │
+│   ├── generators/
+│   │   ├── bsp.c
+│   │   ├── bsp.h
+│   │   ├── drunkard.c
+│   │   ├── drunkard.h
+│   │   ├── cellular.c
+│   │   └── cellular.h
+│   │
+│   └── main.c
+│
+├── assets/
+│
+├── build/
+│
+├── Makefile
+├── structure
+└── readme
+
+
