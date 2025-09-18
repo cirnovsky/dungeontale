@@ -2,6 +2,7 @@
 #include "core/ui.h"
 #include "core/enums.h"
 #include <assert.h>
+#include <stdlib.h>
 
 Map *map_create(int rooms_n, int height, int width) {
 	Map *map = malloc(sizeof(Map));
@@ -10,12 +11,16 @@ Map *map_create(int rooms_n, int height, int width) {
 	map->height = height;
 	map->width = width;
 	map->rooms = calloc(rooms_n, sizeof(Room *));
+	map->tiles = calloc(height * width, sizeof(Tile *));
 
-	Room **room = map->rooms;
+	Room **rooms = map->rooms;
+	Tile **tiles = map->tiles;
 	int i;
 
 	for (i = 0; i < rooms_n; ++i)
-		room[i] = room_create(5, 5, 0, 0);
+		rooms[i] = room_create(5, 5, 0, 0);
+	for (i = 0; i < height * width; ++i)
+		tiles[i] = tile_create(TILE_EMPTY);
 
 	return map;
 }
@@ -28,16 +33,24 @@ void map_destroy(Map *map) {
 #define MAP_HEIGHT 20
 #define MAP_WIDTH 60
 
-static char *map_layout[MAP_HEIGHT];
+static char map_layout[MAP_HEIGHT][MAP_WIDTH];
 
 void map_set(Map *map, int x, int y, int code) {
-	int width = map->width;
+	assert(map != NULL);
+
+	int height = map->height, width = map->width;
+
+	assert(0 <= x && x < height);
+	assert(0 <= y && y < width);
+
 	Tile *tile = map->tiles[x * width + y];
 
 	tile_draw(tile, code);
 }
 
 Tile *map_get_tile(Map *map, int x, int y) {
+	assert(map != NULL);
+
 	int height = map->height, width = map->width;
 
 	assert(0 <= x && x < height);
@@ -46,8 +59,10 @@ Tile *map_get_tile(Map *map, int x, int y) {
 	return map->tiles[x * width + y];
 }
 
-
 void room_draw(Room *room, Map *map) {
+	assert(room != NULL);
+	assert(map != NULL);
+
 	int height = room->height, width = room->width;
 	int start_x, start_y;
 	int i, j;
@@ -60,6 +75,24 @@ void room_draw(Room *room, Map *map) {
 	for (j = 0; j < width; ++j) {
 		map_set(map, start_x, j, TILE_WALL);
 		map_set(map, start_x + height - 1, start_y, TILE_WALL);
+	}
+}
+
+/*
+ * Write part of @*map to @map_layout
+ * starting from (@x, @y)
+*/
+void map_write(Map *map, int x, int y) {
+	assert(map != NULL);
+
+	int i, j;
+
+	for (i = 0; i < MAP_HEIGHT; ++i) {
+		for (j = 0; j < MAP_WIDTH; ++j) {
+			Tile *tile = map_get_tile(map, i + x, j + y);
+
+			map_layout[i][j] = tile_display(tile);
+		}
 	}
 }
 
@@ -76,21 +109,15 @@ void map_init() {
 		map_set(map, MAP_HEIGHT - 1, i, TILE_WALL);
 	}
 
+	return map_write(map, 0, 0);
+
 	Room **room = map->rooms;
 	int rooms_n = map->rooms_n;
 
 	for (i = 0; i < rooms_n; ++i)
 		room_draw(room[i], map);
 
-	int j;
-	
-	for (i = 0; i < MAP_HEIGHT; ++i) {
-		for (j = 0; j < MAP_WIDTH; ++j) {
-			Tile *tile = map_get_tile(map, i, j);
-
-			map_layout[i][j] = LEGENDS[tile->code];
-		}
-	}
+	map_write(map, 0, 0);
 }
 
 void map_draw(){

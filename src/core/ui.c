@@ -36,6 +36,7 @@ void ui_draw() {
     box(win_log, 0, 0);
     mvwprintw(win_log, 0, 2, " Battle Log ");
     
+    map_init();
     map_draw();
     player_draw();
     
