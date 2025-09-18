@@ -1,26 +1,26 @@
 dungeontale/
-├── src/                    # Source code
-│   ├── core/               # Core game engine
-│   │   ├── map/            # Map-related code
+├── src/
+│   ├── core/
+│   │   ├── map/
 │   │   │   ├── map.c
 │   │   │   ├── map.h
 │   │   │   ├── tile.c
 │   │   │   └── tile.h
 │   │   │
-│   │   ├── entities/       # Player, monsters, NPCs
+│   │   ├── entities/
 │   │   │   ├── entity.c
 │   │   │   └── entity.h
 │   │   │
-│   │   ├── utils/          # Shared utilities
+│   │   ├── utils/
 │   │   │   ├── rng.c
 │   │   │   ├── rng.h
 │   │   │   ├── geometry.c
 │   │   │   ├── geometry.h
 │   │   │   └── logger.h
 │   │   │
-│   │   └── game.c          # Game loop
+│   │   └── game.c
 │   │
-│   ├── generators/         # Procedural map generation algorithms
+│   ├── generators/
 │   │   ├── bsp.c
 │   │   ├── bsp.h
 │   │   ├── drunkard.c
@@ -28,17 +28,14 @@ dungeontale/
 │   │   ├── cellular.c
 │   │   └── cellular.h
 │   │
-│   └── main.c              # Entry point
+│   └── main.c
 │
-├── include/                # Public headers (if you want to separate API)
+├── assets/
 │
-├── tests/                  # Unit tests
-│   ├── test_map.c
-│   └── test_rng.c
+├── build/
 │
-├── assets/                 # Optional: static data
-│
-├── build/                  # Build output directory
-│
-├── Makefile                # Build script
-└── README.md
+├── Makefile
+├── structure
+└── readme
+
+
