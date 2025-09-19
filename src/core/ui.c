@@ -17,8 +17,8 @@ void ui_init() {
     int term_h, term_w;
     getmaxyx(stdscr, term_h, term_w);
 
-    win_main = newwin(term_h - 10, term_w, 0, 0);
-    win_log = newwin(10, term_w, term_h - 10, 0);
+    win_main = newwin(term_h, term_w, 0, term_w / 5);
+    win_log = newwin(term_h / 3, term_w / 5, 0, 0);
     
     scrollok(win_log, TRUE);
     
@@ -32,8 +32,8 @@ void ui_recreate_windos() {
     int term_h, term_w;
     getmaxyx(stdscr, term_h, term_w);
 
-    win_main = newwin(term_h - 10, term_w, 0, 0);
-    win_log = newwin(10, term_w, term_h - 10, 0);
+    win_main = newwin(term_h, term_w, 0, term_w / 5);
+    win_log = newwin(term_h / 3, term_w / 5, 0, 0);
     scrollok(win_log, TRUE);
     keypad(win_main, TRUE);
 
@@ -53,8 +53,8 @@ void ui_draw() {
     mvwprintw(win_log, 0, 2, " Battle Log ");
     
     map_init();
-    map_draw(win_main);
-    player_draw(win_main);
+    map_draw();
+    player_draw();
     
     wrefresh(win_main);
     wrefresh(win_log);
@@ -62,15 +62,32 @@ void ui_draw() {
 
 void ui_log_message(const char *message) {
     int log_h, log_w;
-    getmaxyx(win_log, log_h, log_w); 
+    getmaxyx(win_log, log_h, log_w);
+    int content_w = log_w - 2;
+
+    char *msg_copy = strdup(message);
+    if (!msg_copy) return;
 
     wscrl(win_log, 1);
+    wmove(win_log, log_h - 2, 1);
+    wprintw(win_log, "> ");
 
-    mvwprintw(win_log, log_h - 2, 2, " > %.*s", log_w - 4, message);
+    char *word = strtok(msg_copy, " ");
+    while (word != NULL) {
+        if (getcurx(win_log) + (int)strlen(word) + 1 > content_w) {
+            wscrl(win_log, 1); 
+            wmove(win_log, log_h - 2, 1); 
+            wprintw(win_log, "  "); 
+        }
+
+        wprintw(win_log, "%s ", word);
+        
+        word = strtok(NULL, " ");
+    }
+    
+    free(msg_copy);
 
     box(win_log, 0, 0);
     mvwprintw(win_log, 0, 2, " Battle Log ");
-
     wrefresh(win_log);
 }
-

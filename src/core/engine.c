@@ -1,11 +1,13 @@
-#define _DEFAULT_SOURCE 
 #include "core/engine.h"
 #include "core/ui.h"
 #include "game/player.h"
+#include "core/renderer.h"
 #include <unistd.h> 
+
 
 void engine_init() {
     ui_init();
+    renderer_init();
     player_init();
     nodelay(stdscr, TRUE); 
     ui_log_message("Use arrow keys to move.");
