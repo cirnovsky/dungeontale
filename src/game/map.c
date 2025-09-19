@@ -18,7 +18,7 @@ Map *map_create(int rooms_n, int height, int width) {
 	int i;
 
 	for (i = 0; i < rooms_n; ++i)
-		rooms[i] = room_create(5, 5, 0, 0);
+		rooms[i] = room_create(8, 8, 0, 0);
 	for (i = 0; i < height * width; ++i)
 		tiles[i] = tile_create(TILE_EMPTY);
 
@@ -33,7 +33,7 @@ void map_destroy(Map *map) {
 #define MAP_HEIGHT 20
 #define MAP_WIDTH 60
 
-static char map_layout[MAP_HEIGHT][MAP_WIDTH];
+static char map_layout[MAP_HEIGHT][MAP_WIDTH + 1];
 
 void map_set(Map *map, int x, int y, int code) {
 	assert(map != NULL);
@@ -74,7 +74,7 @@ void room_draw(Room *room, Map *map) {
 	}
 	for (j = 0; j < width; ++j) {
 		map_set(map, start_x, j, TILE_WALL);
-		map_set(map, start_x + height - 1, start_y, TILE_WALL);
+		map_set(map, start_x + height - 1, start_y + j, TILE_WALL);
 	}
 }
 
@@ -93,6 +93,7 @@ void map_write(Map *map, int x, int y) {
 
 			map_layout[i][j] = tile_display(tile);
 		}
+        map_layout[i][MAP_WIDTH] = '\0';
 	}
 }
 
@@ -109,7 +110,7 @@ void map_init() {
 		map_set(map, MAP_HEIGHT - 1, i, TILE_WALL);
 	}
 
-	return map_write(map, 0, 0);
+//	return map_write(map, 0, 0);
 
 	Room **room = map->rooms;
 	int rooms_n = map->rooms_n;
