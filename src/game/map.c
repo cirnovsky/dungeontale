@@ -1,8 +1,11 @@
+#define _XOPEN_SOURCE_EXTENDED 1
 #include "game/map.h"
 #include "core/ui.h"
 #include "core/enums.h"
 #include <assert.h>
+#include <wchar.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 Map *map_create(int rooms_n, int height, int width) {
 	Map *map = malloc(sizeof(Map));
@@ -17,8 +20,9 @@ Map *map_create(int rooms_n, int height, int width) {
 	Tile **tiles = map->tiles;
 	int i;
 
-	for (i = 0; i < rooms_n; ++i)
-		rooms[i] = room_create(8, 8, 0, 0);
+	for (i = 0; i < rooms_n; ++i) {
+		rooms[i] = room_create(8, 8, 1, 1);
+	}
 	for (i = 0; i < height * width; ++i)
 		tiles[i] = tile_create(TILE_EMPTY);
 
@@ -33,7 +37,7 @@ void map_destroy(Map *map) {
 #define MAP_HEIGHT 20
 #define MAP_WIDTH 60
 
-static char map_layout[MAP_HEIGHT][MAP_WIDTH + 1];
+static wchar_t map_layout[MAP_HEIGHT][MAP_WIDTH + 1];
 
 void map_set(Map *map, int x, int y, int code) {
 	assert(map != NULL);
@@ -69,13 +73,17 @@ void room_draw(Room *room, Map *map) {
 
 	room_get_start(room, &start_x, &start_y);
 	for (i = 0; i < height; ++i) {
-		map_set(map, i, start_y, TILE_WALL);
-		map_set(map, i, start_y + width - 1, TILE_WALL);
+		map_set(map, start_x + i, start_y, TILE_WALL_HOR);
+		map_set(map, start_x + i, start_y + width - 1, TILE_WALL_HOR);
 	}
 	for (j = 0; j < width; ++j) {
-		map_set(map, start_x, j, TILE_WALL);
-		map_set(map, start_x + height - 1, start_y + j, TILE_WALL);
+		map_set(map, start_x, start_y + j, TILE_WALL_VER);
+		map_set(map, start_x + height - 1, start_y + j, TILE_WALL_VER);
 	}
+	map_set(map, start_x, start_y, TILE_WALL_COR_LU);
+	map_set(map, start_x, start_y + width - 1, TILE_WALL_COR_RU);
+	map_set(map, start_x + height - 1, start_y, TILE_WALL_COR_LD);
+	map_set(map, start_x + height - 1, start_y + width - 1, TILE_WALL_COR_RD);
 }
 
 /*
@@ -92,8 +100,10 @@ void map_write(Map *map, int x, int y) {
 			Tile *tile = map_get_tile(map, i + x, j + y);
 
 			map_layout[i][j] = tile_display(tile);
+			//if (tile->code == TILE_WALL_HOR)
+				//map_layout[i][j] = 0x
 		}
-        map_layout[i][MAP_WIDTH] = '\0';
+		map_layout[i][MAP_WIDTH] = '\0';
 	}
 }
 
@@ -110,8 +120,6 @@ void map_init() {
 		map_set(map, MAP_HEIGHT - 1, i, TILE_WALL);
 	}
 
-//	return map_write(map, 0, 0);
-
 	Room **room = map->rooms;
 	int rooms_n = map->rooms_n;
 
@@ -123,7 +131,7 @@ void map_init() {
 
 void map_draw(){
     for (int y = 0; y < MAP_HEIGHT; ++y){
-        mvwprintw(win_main, y+1, 1, "%s", map_layout[y]);    
+        mvwaddwstr(win_main, y+1, 1, map_layout[y]);    
     }
 }
 

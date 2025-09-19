@@ -1,11 +1,13 @@
 #include "core/ui.h"
 #include "game/map.h"
 #include "game/player.h"
+#include <locale.h>
 
 WINDOW *win_main;
 WINDOW *win_log;
 
 void ui_init() {
+	setlocale(LC_ALL, "");
     initscr();
     cbreak();
     noecho();
