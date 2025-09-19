@@ -109,8 +109,6 @@ void map_init() {
 		map_set(map, MAP_HEIGHT - 1, i, TILE_WALL);
 	}
 
-	return map_write(map, 0, 0);
-
 	Room **room = map->rooms;
 	int rooms_n = map->rooms_n;
 
