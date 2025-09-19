@@ -20,6 +20,10 @@ void engine_run() {
         game_timer++; 
 
         ch = getch();
+        if (ch == KEY_RESIZE) {
+            handle_resize();
+        }
+
         if (ch == 'q') {
             break; 
         }
@@ -32,6 +36,13 @@ void engine_run() {
 
         usleep(30000); 
     }
+}
+
+void handle_resize(){
+    ui_recreate_windos();
+    clear();
+    refresh();
+    ui_draw();
 }
 
 void engine_shutdown() {

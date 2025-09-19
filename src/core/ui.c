@@ -25,6 +25,20 @@ void ui_init() {
     refresh();
 }
 
+void ui_recreate_windos() {
+    if (win_main) delwin(win_main);
+    if (win_log) delwin(win_log);
+
+    int term_h, term_w;
+    getmaxyx(stdscr, term_h, term_w);
+
+    win_main = newwin(term_h - 10, term_w, 0, 0);
+    win_log = newwin(10, term_w, term_h - 10, 0);
+    scrollok(win_log, TRUE);
+    keypad(win_main, TRUE);
+
+}
+
 void ui_shutdown() {
     delwin(win_main);
     delwin(win_log);
@@ -39,8 +53,8 @@ void ui_draw() {
     mvwprintw(win_log, 0, 2, " Battle Log ");
     
     map_init();
-    map_draw();
-    player_draw();
+    map_draw(win_main);
+    player_draw(win_main);
     
     wrefresh(win_main);
     wrefresh(win_log);

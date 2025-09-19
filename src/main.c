@@ -1,4 +1,5 @@
 #include "core/engine.h"
+#include <locale.h>
 
 int main() {
     engine_init();
