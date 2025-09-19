@@ -53,8 +53,8 @@ void ui_draw() {
     mvwprintw(win_log, 0, 2, " Battle Log ");
     
     map_init();
-    map_draw(win_main);
-    player_draw(win_main);
+    map_draw();
+    player_draw();
     
     wrefresh(win_main);
     wrefresh(win_log);
