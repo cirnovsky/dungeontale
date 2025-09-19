@@ -1,15 +1,23 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -g -Ilib
-LDFLAGS = -lncurses
+CFLAGS = -Wall -Wextra -std=c99 -Iinclude -D_DEFAULT_SOURCE
 
-SRC_FILES = $(wildcard src/**/*.c src/*.c)
-OBJ_FILES = $(patsubst src/%.c, obj/%.o, $(SRC_FILES))
-EXECUTABLE = dungeontale
+ifeq ($(shell uname), Darwin)
+    LDFLAGS = -lncurses
+else
+    LDFLAGS = -lncursesw
+endif
+
+SOURCES = $(shell find src -name '*.c')
+OBJECTS = $(SOURCES:src/%.c=obj/%.o)
+EXECUTABLE = rogue_game
+
+
+.PHONY: all clean
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJ_FILES)
-	$(CC) $(OBJ_FILES) -o $(EXECUTABLE) $(LDFLAGS)
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
 obj/%.o: src/%.c
 	@mkdir -p $(@D)

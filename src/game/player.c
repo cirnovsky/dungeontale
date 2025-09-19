@@ -1,8 +1,9 @@
+#include <locale.h>
 #include "game/player.h"
 #include "game/map.h"
 #include "core/ui.h"
 
-#define PLAYER_MOVE_COOLDOWN 3
+#define PLAYER_MOVE_COOLDOWN 1
 
 Player player;
 
