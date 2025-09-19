@@ -2,6 +2,7 @@
 #define TILE_H
 
 #include <stdlib.h>
+#include <wchar.h>
 
 typedef struct {
 	int code, state;
@@ -12,6 +13,6 @@ void tile_destroy(Tile *tile);
 void tile_set_state(Tile *tile, int state);
 int tile_get_state(Tile *tile);
 void tile_draw(Tile *tile, int code);
-char tile_display(Tile *tile);
+wchar_t tile_display(Tile *tile);
 
 #endif

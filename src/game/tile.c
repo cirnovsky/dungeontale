@@ -32,7 +32,7 @@ void tile_draw(Tile *tile, int code) {
 	tile->code = code;
 }
 
-char tile_display(Tile *tile) {
+wchar_t tile_display(Tile *tile) {
 	assert(tile != NULL);
 	return LEGENDS[tile->code];
 }

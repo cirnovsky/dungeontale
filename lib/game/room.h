@@ -9,8 +9,7 @@
 
 typedef struct {
 	int width, height;
-	int start;
-	Tile *tiles;
+	//int start;
 //详见room.c的改动
     int x;
     int y;

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -g -Ilib
-LDFLAGS = -lncurses 
+LDFLAGS = -lncurses
 
 SRC_FILES = $(wildcard src/**/*.c src/*.c)
 OBJ_FILES = $(patsubst src/%.c, obj/%.o, $(SRC_FILES))
