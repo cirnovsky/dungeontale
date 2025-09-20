@@ -1,5 +1,6 @@
 #include <locale.h>
 #include "game/player.h"
+#include "core/renderer.h"
 #include "game/map.h"
 #include "core/ui.h"
 
@@ -12,12 +13,19 @@ void player_init(){
     player.x = 5;
     player.target_dx = 0; 
     player.target_dy = 0;
-    player.icon = '@';    
     player.last_move_time = 0; 
 }
 
 void player_draw(){
-    mvwaddch(win_main, player.y + 1, player.x + 1, player.icon);
+
+    Sprite player_sprite = {
+        .symbol = L'\U0001F605',
+        .fg_color = COLOR_YELLOW,
+        .bg_color = -1,
+        .attributes = A_NORMAL
+    };
+
+    renderer_draw_sprite(win_main, player.y + 1, player.x + 1, &player_sprite);
 }
 
 void player_set_move_target(int ch){
@@ -43,7 +51,6 @@ void player_update(int game_timer) {
         if (map_is_walkable(next_y, next_x)){
             player.y = next_y;
             player.x = next_x;
-            ui_log_message("Player moves.");
         } else {
             ui_log_message("Player bumps into a wall.");
         }
