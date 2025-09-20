@@ -1,6 +1,7 @@
 #include "core/ui.h"
 #include "game/map.h"
 #include "game/player.h"
+#include "game/hitbox.h"
 #include <locale.h>
 
 WINDOW *win_main;
@@ -32,7 +33,7 @@ void ui_recreate_windos() {
     int term_h, term_w;
     getmaxyx(stdscr, term_h, term_w);
 
-    win_main = newwin(term_h, term_w, 0, term_w / 5);
+    win_main = newwin(term_h, term_w - term_w/5, 0, term_w / 5);
     win_log = newwin(term_h / 3, term_w / 5, 0, 0);
     scrollok(win_log, TRUE);
     keypad(win_main, TRUE);
@@ -46,16 +47,19 @@ void ui_shutdown() {
 }
 
 void ui_draw() {
-    werase(win_main); 
+    werase(win_main);
 
-    box(win_main, 0, 0);
+    box(win_main, 0 , 0);
     box(win_log, 0, 0);
     mvwprintw(win_log, 0, 2, " Battle Log ");
-    
-    map_init();
-    map_draw();
+
+
+    map_draw(win_main);
+
+    hitbox_draw_all(win_main);
+
     player_draw();
-    
+
     wrefresh(win_main);
     wrefresh(win_log);
 }
