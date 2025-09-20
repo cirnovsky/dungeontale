@@ -1,6 +1,7 @@
 #include "core/engine.h"
 #include "core/ui.h"
 #include "game/player.h"
+#include "game/map.h"
 #include "core/renderer.h"
 #include "game/hitbox.h"
 #include <unistd.h> 
@@ -11,6 +12,7 @@ void engine_init() {
     renderer_init();
     player_init();
     nodelay(stdscr, TRUE);
+    map_init();
     hitbox_init(); 
     ui_log_message("Use arrow keys to move.");
     ui_log_message("Press 'q' to quit.");

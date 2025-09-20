@@ -58,7 +58,7 @@ void ui_draw() {
 
     hitbox_draw_all(win_main);
 
-    player_draw();
+    player_draw(win_main);
 
     wrefresh(win_main);
     wrefresh(win_log);

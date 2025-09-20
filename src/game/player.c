@@ -30,7 +30,7 @@ void player_init(){
     player.attack_cooldown = 0;
 }
 
-void player_draw(){
+void player_draw(WINDOW *win){
 
     Sprite player_sprite = {
         .symbol = L'@',
@@ -39,7 +39,7 @@ void player_draw(){
         .attributes = A_BOLD
     };
 
-    renderer_draw_sprite(win_main, player.y + 1, player.x + 1, &player_sprite);
+    renderer_draw_sprite(win, player.y + 1, player.x + 1, &player_sprite);
 }
 
 void player_set_move_target(int ch){
@@ -77,7 +77,6 @@ void player_update(int game_timer) {
 }
 
 void player_attack() {
-    ui_log_message("player_attack() CALLED");
     if (player.attack_cooldown > 0) {
         ui_log_message("Attack is on cooldown");
         return; 
@@ -108,9 +107,6 @@ void player_attack() {
         hitbox_x = player.x + 1;
     }
 
-    char debug_msg[128];
-    sprintf(debug_msg, "Creating hitbox at y=%d, x=%d with size h=%d, w=%d", hitbox_y, hitbox_x, attack_h, attack_w);
-    ui_log_message(debug_msg);
 
     hitbox_create(hitbox_y, hitbox_x, attack_h, attack_w, 10);
 }

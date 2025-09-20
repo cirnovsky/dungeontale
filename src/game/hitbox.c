@@ -50,19 +50,13 @@ void hitbox_draw_all(WINDOW *win){
         .attributes = A_NORMAL
    };
 
-   bool found_active_hitbox = false;
 
    for (int i = 0; i < MAX_HITBOXES; ++i){
        if (g_hitboxes[i].active){
             
-            found_active_hitbox = true;
 
             Hitbox *hb = &g_hitboxes[i];
 
-            char debug_msg[128];
-            sprintf(debug_msg, "Frame: Drawing active hitbox #%d: lifetime=%d, y=%d, x=%d", 
-                             0, i, hb->lifetime, hb->y, hb->x);
-            ui_log_message(debug_msg);
 
 
             for (int j = 0; j < hb->height; ++j){
@@ -78,9 +72,6 @@ void hitbox_draw_all(WINDOW *win){
             }
        }
    }
-   if (!found_active_hitbox) {
-    //    ui_log_message("Frame: No active hitboxes to draw."); // 你可以取消这行的注释来获得更详细的信息
-    }
 }
 
 

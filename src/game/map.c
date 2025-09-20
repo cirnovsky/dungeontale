@@ -129,9 +129,9 @@ void map_init() {
 	map_write(map, 0, 0);
 }
 
-void map_draw(){
+void map_draw(WINDOW *win){
     for (int y = 0; y < MAP_HEIGHT; ++y){
-        mvwaddwstr(win_main, y+1, 1, map_layout[y]);    
+        mvwaddwstr(win, y+1, 1, map_layout[y]);    
     }
 }
 
