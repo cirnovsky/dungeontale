@@ -56,6 +56,7 @@ Tile *map_get_tile(Map *map, int x, int y) {
 	return map->tiles[x * width + y];
 }
 
+
 int map_is_walkable(int y, int x){
     if (y < 0 || y >= MAP_HEIGHT || x < 0 || x >= MAP_WIDTH){
         return 0;
