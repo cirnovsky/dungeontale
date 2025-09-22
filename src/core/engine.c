@@ -3,6 +3,7 @@
 #include "game/player.h"
 #include "game/map.h"
 #include "core/renderer.h"
+#include "core/mapinit.h"
 #include "game/hitbox.h"
 #include <unistd.h> 
 
