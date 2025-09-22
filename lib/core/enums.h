@@ -3,6 +3,9 @@
 
 #include <wchar.h>
 
+#define MAP_HEIGHT 20
+#define MAP_WIDTH 60
+
 extern const wchar_t *LEGENDS;
 
 enum Tiles {

@@ -1,10 +1,18 @@
+#define _XOPEN_SOURCE_EXTENDED 1
 #include "core/ui.h"
-#include "game/map.h"
+#include "core/mapinit.h"
+#include "core/enums.h"
 #include "game/player.h"
 #include <locale.h>
+#include <ncurses.h>
 
 WINDOW *win_main;
 WINDOW *win_log;
+
+void map_draw(){
+    for (int y = 0; y < MAP_HEIGHT; ++y)
+        mvwaddwstr(win_main, y+1, 1, map_layout[y]);    
+}
 
 void ui_init() {
 	setlocale(LC_ALL, "");
