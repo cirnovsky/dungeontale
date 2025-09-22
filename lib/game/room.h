@@ -8,14 +8,14 @@
 #include "game/tile.h"
 
 typedef struct {
-	int width, height;
+	int height, width;
 	//int start;
 //详见room.c的改动
     int x;
     int y;
 } Room;
 
-Room *room_create(int width, int height, int start_x, int start_y);
+Room *room_create(int height, int width, int start_x, int start_y);
 void room_start_coord(Room *room);
 void room_destroy(Room *room);
 void room_get_start(Room *room, int *x, int *y);
