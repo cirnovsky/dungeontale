@@ -40,8 +40,8 @@ void hitbox_update_all() {
             g_hitboxes[i].active = false;
         }
     }
-}
 
+}
 void hitbox_draw_all(WINDOW *win){
     Sprite hitbox_sprite = {
         .symbol = L'*',

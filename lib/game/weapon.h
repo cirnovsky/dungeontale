@@ -4,9 +4,10 @@
 #include "../common.h"
 
 typedef struct {
-    int width;
-    int length;
+    int attack_reach;
+    int attack_sweep;
     int weight;
+    const char *name;
 } Weapon;
 
 void hitbox_init();

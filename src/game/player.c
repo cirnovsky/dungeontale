@@ -5,15 +5,17 @@
 #include "core/renderer.h"
 #include "game/map.h"
 #include "core/ui.h"
+#include <stdio.h>
 
 #define PLAYER_MOVE_COOLDOWN 1
 
 Player player;
 
 static Weapon cirnov_dagger = {
-    .width = 2,
-    .length = 1,
-    .weight = 1
+    .attack_sweep = 3,
+    .attack_reach = 2,
+    .weight = 1,
+    .name = "cirnov's tiny dagger"
 };
 
 
@@ -86,27 +88,44 @@ void player_attack() {
         return;
     }
 
-    player.attack_cooldown = 10; 
+    player.attack_cooldown = 30; 
 
     int hitbox_y = player.y;
     int hitbox_x = player.x;
-    int attack_h = player.equipped_weapon->length; 
-    int attack_w = player.equipped_weapon->width;
+    int reach = player.equipped_weapon->attack_reach; 
+    int sweep = player.equipped_weapon->attack_sweep;
+    int hitbox_h, hitbox_w;
 
-    if (player.last_move_dy == -1) { 
-        hitbox_y = player.y - attack_h;
-        hitbox_x = player.x - (attack_w / 2);
-    } else if (player.last_move_dy == 1) { 
+    if (player.last_move_dy != 0) {
+        hitbox_h = reach; 
+        hitbox_w = sweep; 
+    } else { 
+        hitbox_h = sweep; 
+        hitbox_w = reach; 
+    }
+
+
+    if (player.last_move_dy == -1){
+        hitbox_y = player.y - hitbox_h;
+        hitbox_x = player.x - (hitbox_w / 2);
+    } else if (player.last_move_dy == 1){
         hitbox_y = player.y + 1;
-        hitbox_x = player.x - (attack_w / 2);
-    } else if (player.last_move_dx == -1) { 
-        hitbox_y = player.y - (attack_h / 2);
-        hitbox_x = player.x - attack_w;
-    } else if (player.last_move_dx == 1) { 
-        hitbox_y = player.y - (attack_h / 2);
+        hitbox_x = player.x - (hitbox_h / 2);
+    } else if (player.last_move_dx == -1){
+        hitbox_y = player.y - (hitbox_h / 2);
+        hitbox_x = player.x - hitbox_w;
+    } else if (player.last_move_dx == 1){
+        hitbox_y = player.y - (hitbox_h / 2);
         hitbox_x = player.x + 1;
     }
 
 
-    hitbox_create(hitbox_y, hitbox_x, attack_h, attack_w, 10);
+
+
+    hitbox_create(hitbox_y, hitbox_x, hitbox_h, hitbox_w, 3);
+
+
+    char log_buffer[128];
+    snprintf(log_buffer, sizeof(log_buffer), "Slashing with %s.",player.equipped_weapon->name);
+    ui_log_message(log_buffer);
 }
