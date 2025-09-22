@@ -11,7 +11,7 @@ WINDOW *win_log;
 
 void map_draw(){
     for (int y = 0; y < MAP_HEIGHT; ++y)
-        mvwaddwstr(win_main, y+1, 1, map_layout[y]);    
+        mvwaddwstr(win_main, y+1, 1, map_layout[y]);
 }
 
 void ui_init() {
