@@ -6,6 +6,8 @@
 #ifndef MAP_H
 #define MAP_H
 
+
+#include <ncurses.h>
 #include "room.h"
 
 typedef struct {
@@ -20,7 +22,7 @@ void map_destroy(Map *map);
 void map_set(Map *map, int x, int y, int code);
 Tile *map_get_tile(Map *map, int x, int y);
 
-void map_draw();
+void map_draw(WINDOW *win);
 int map_is_walkable(int y, int x);
 
 #endif
