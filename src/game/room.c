@@ -4,10 +4,10 @@
 #include "core/enums.h"
 #include <stdlib.h>
 
-Room *room_create(int width, int height, int x, int y) {
+Room *room_create(int height, int width, int x, int y) {
 	Room *room = malloc(sizeof(Room));
-	room->width = width;
 	room->height = height;
+	room->width = width;
 //	room->start = x * width + y;
     room->x = x;
     room->y = y;
