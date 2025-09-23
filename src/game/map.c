@@ -26,7 +26,19 @@ Map *map_create(int rooms_n, int height, int width) {
 }
 
 void map_destroy(Map *map) {
-	free(map->rooms);
+	int i;
+	int rooms_n = map->rooms_n;
+	Room **rooms = map->rooms;
+
+	for (i = 0; i < rooms_n; ++i)
+		room_destroy(rooms[i]);
+
+	int height = map->height, width = map->width;
+	Tile **tiles = map->tiles;
+
+	for (i = 0; i < height * width; ++i)
+		tile_destroy(tiles[i]);
+
 	free(map);
 }
 
@@ -55,7 +67,6 @@ Tile *map_get_tile(Map *map, int x, int y) {
 
 	return map->tiles[x * width + y];
 }
-
 
 int map_is_walkable(int y, int x){
     if (y < 0 || y >= MAP_HEIGHT || x < 0 || x >= MAP_WIDTH){

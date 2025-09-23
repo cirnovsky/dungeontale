@@ -24,6 +24,9 @@ int tile_get_state(Tile *tile) {
 }
 
 void tile_destroy(Tile *tile) {
+	if (tile == NULL)
+		return;
+
 	free(tile);
 }
 

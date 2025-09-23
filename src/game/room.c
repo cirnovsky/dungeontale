@@ -6,11 +6,15 @@
 
 Room *room_create(int height, int width, int x, int y) {
 	Room *room = malloc(sizeof(Room));
+
 	room->height = height;
 	room->width = width;
 //	room->start = x * width + y;
     room->x = x;
     room->y = y;
+	room->ports_n = 0;
+	room->ports = NULL;
+
 	return room;
 }
 
@@ -26,5 +30,13 @@ void room_get_start(Room *room, int *x, int *y) {
 void room_destroy(Room *room) {
 	if (room == NULL) return;
     	//free(room->tiles);
+	
+	int i;
+	int ports_n = room->ports_n;
+	Port **ports = room->ports;
+	
+	for (i = 0; i < ports_n; ++i)
+		port_destroy(ports[i]);
+
     	free(room);
 }

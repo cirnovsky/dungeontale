@@ -21,7 +21,7 @@ Map *bsp_generator(int rooms_n, int height, int width) {
 	int count_rooms = 0;
 
 	rng_seed(114514); // 114514 is dummy
-	BSPNode *root = bsp_tree(height, width, 0, 0, min_height, min_width, &count_rooms);
+	BSPNode *root = bsp_tree(height - 1, width - 1, 0, 0, min_height, min_width, &count_rooms);
 
 	Map *map = map_create(count_rooms, height, width);
 	int success = 0;

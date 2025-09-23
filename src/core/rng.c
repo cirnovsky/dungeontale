@@ -8,7 +8,7 @@ void rng_seed(unsigned int seed) {
 	struct timeval tv;
 
 	gettimeofday(&tv, NULL);
-	Z = seed | (tv.tv_sec ^ tv.tv_usec) | 1;
+	Z = seed + (tv.tv_sec ^ tv.tv_usec) | 1;
 }
 
 int rand_() {

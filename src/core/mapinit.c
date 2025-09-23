@@ -60,7 +60,7 @@ void map_write(Map *map, int x, int y) {
 void map_init() {
 	Map *map = NULL;
 
-	map = bsp_generator(6, MAP_HEIGHT, MAP_WIDTH); // 3 is dummy
+	map = bsp_generator(MAP_ROOMS_N, MAP_HEIGHT_ACT, MAP_WIDTH_ACT);
 	
 	static char s[114514];
 
