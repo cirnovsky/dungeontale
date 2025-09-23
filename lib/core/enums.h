@@ -3,8 +3,8 @@
 
 #include <wchar.h>
 
-#define MAP_HEIGHT 20
-#define MAP_WIDTH 60
+#define MAP_HEIGHT 40
+#define MAP_WIDTH 120
 
 extern const wchar_t *LEGENDS;
 

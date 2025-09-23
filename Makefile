@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -Ilib -D_DEFAULT_SOURCE -D_XOPEN_SOURCE_EXTENDED
+CFLAGS = -Wall -Wextra -std=c99 -Ilib -D_DEFAULT_SOURCE -D_XOPEN_SOURCE_EXTENDED -g
 
 ifeq ($(shell uname), Darwin)
     LDFLAGS = -lncurses
