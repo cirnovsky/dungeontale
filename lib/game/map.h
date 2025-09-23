@@ -17,13 +17,15 @@ typedef struct {
 	Tile **tiles;
 } Map;
 
+extern Map *g_world_map;
+
 Map *map_create(int rooms_n, int height, int width);
 void map_destroy(Map *map);
 void map_set(Map *map, int x, int y, int code);
 Tile *map_get_tile(Map *map, int x, int y);
 
 void map_draw(WINDOW *win);
-int map_is_walkable(int y, int x);
+bool map_is_walkable(int y, int x);
 
 #endif
 

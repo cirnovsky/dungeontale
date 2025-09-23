@@ -10,6 +10,6 @@ void ui_init();
 void ui_shutdown();
 void ui_draw();
 void ui_recreate_windos();
-void ui_log_message(const char* message);
+void ui_log_message(const char* format, ...);
 
 #endif

@@ -6,6 +6,8 @@
 #include "game/hitbox.h"
 #include <locale.h>
 #include <ncurses.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 WINDOW *win_main;
 WINDOW *win_log;
@@ -72,12 +74,21 @@ void ui_draw() {
     wrefresh(win_log);
 }
 
-void ui_log_message(const char *message) {
+void ui_log_message(const char *format, ...) {
+
+    char formatted_message[512];
+    va_list args;
+
+    va_start(args, format);
+    vsnprintf(formatted_message, sizeof(formatted_message), format, args);
+    va_end(args);
+
+
     int log_h, log_w;
     getmaxyx(win_log, log_h, log_w);
     int content_w = log_w - 2;
 
-    char *msg_copy = strdup(message);
+    char *msg_copy = strdup(formatted_message);
     if (!msg_copy) return;
 
     wscrl(win_log, 1);

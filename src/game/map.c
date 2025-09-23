@@ -68,9 +68,23 @@ Tile *map_get_tile(Map *map, int x, int y) {
 	return map->tiles[x * width + y];
 }
 
-int map_is_walkable(int y, int x){
-    if (y < 0 || y >= MAP_HEIGHT || x < 0 || x >= MAP_WIDTH){
-        return 0;
+bool map_is_walkable(int y, int x){
+    if (y < 0 || y >= g_world_map->height || x < 0 || x >= g_world_map->width){
+        return false;
     }
-    return map_layout[y][x] != '#';
+
+    Tile *tile = map_get_tile(g_world_map, y, x);
+
+    switch (tile->code){
+        case TILE_WALL:
+        case TILE_WALL_HOR:
+        case TILE_WALL_VER:
+        case TILE_WALL_COR_LU:
+        case TILE_WALL_COR_RU:
+        case TILE_WALL_COR_LD:
+        case TILE_WALL_COR_RD:
+            return false;
+        default:
+            return true;
+    }
 }
