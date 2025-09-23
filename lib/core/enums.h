@@ -3,8 +3,12 @@
 
 #include <wchar.h>
 
-#define MAP_HEIGHT 40
-#define MAP_WIDTH 120
+#define MAP_HEIGHT	40
+#define MAP_WIDTH	120
+
+#define MAP_ROOMS_N	6
+#define MAP_HEIGHT_ACT	40
+#define MAP_WIDTH_ACT	120
 
 extern const wchar_t *LEGENDS;
 
@@ -21,6 +25,7 @@ enum Tiles {
 	TILE_WALL_COR_RD,
 	TILE_ON,
 	TILE_OFF,
+	TILE_PORT,
 	TILE_N
 };
 

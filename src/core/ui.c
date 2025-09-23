@@ -62,7 +62,7 @@ void ui_draw() {
     mvwprintw(win_log, 0, 2, " Battle Log ");
 
 
-    map_draw(win_main);
+    map_draw();
 
     hitbox_draw_all(win_main);
 

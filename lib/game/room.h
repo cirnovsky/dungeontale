@@ -6,6 +6,7 @@
 #define ROOM_H
 
 #include "game/tile.h"
+#include "game/port.h"
 
 typedef struct {
 	int height, width;
@@ -13,6 +14,8 @@ typedef struct {
 //详见room.c的改动
     int x;
     int y;
+	int ports_n;
+	Port **ports;
 } Room;
 
 Room *room_create(int height, int width, int start_x, int start_y);

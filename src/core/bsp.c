@@ -24,9 +24,10 @@ BSPNode *bsp_tree(int h, int w, int x, int y, int min_h, int min_w, int *count_r
 	BSPNode *node = BSPNode_create(NULL);
 
 	if (h / 2 < min_h && w / 2 < min_w) {
-		node->room = room_create(h - 1, w - 1, x, y);
-		assert(node->room->height == h - 1);
-		assert(node->room->width == w - 1);
+		int h_ = rng_range(4, h);
+		int w_ = rng_range(4, w);
+
+		node->room = room_create(h_, w_, x, y);
 		(*count_rooms)++;
 		return node;
 	}
