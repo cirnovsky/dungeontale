@@ -60,7 +60,12 @@ void map_write(Map *map, int x, int y) {
 void map_init() {
 	Map *map = NULL;
 
-	map = bsp_generator(3, MAP_HEIGHT, MAP_WIDTH); // 3 is dummy
+	map = bsp_generator(6, MAP_HEIGHT, MAP_WIDTH); // 3 is dummy
+	
+	static char s[114514];
+
+	sprintf(s, "rooms_n: %d", map->rooms_n);
+	ui_log_message(s);
 
 	int i;
 
@@ -73,11 +78,11 @@ void map_init() {
 		map_set(map, MAP_HEIGHT - 1, i, TILE_WALL);
 	}
 
-	Room **room = map->rooms;
+	Room **rooms = map->rooms;
 	int rooms_n = map->rooms_n;
 
 	for (i = 0; i < rooms_n; ++i)
-		room_draw(room[i], map);
+		room_draw(rooms[i], map);
 
 	map_write(map, 0, 0);
 }
