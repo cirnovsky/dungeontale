@@ -77,55 +77,56 @@ void player_update(int game_timer) {
     }
     
 }
-
 void player_attack() {
     if (player.attack_cooldown > 0) {
-        ui_log_message("Attack is on cooldown");
-        return; 
+        ui_log_message("Attack is on cooldown.");
+        return;
     }
-
     if (player.equipped_weapon == NULL) {
+        ui_log_message("You have no weapon equipped.");
         return;
     }
 
-    player.attack_cooldown = 30; 
 
-    int hitbox_y = player.y;
-    int hitbox_x = player.x;
-    int reach = player.equipped_weapon->attack_reach; 
+    int reach = player.equipped_weapon->attack_reach;
     int sweep = player.equipped_weapon->attack_sweep;
-    int hitbox_h, hitbox_w;
 
-    if (player.last_move_dy != 0) {
-        hitbox_h = reach; 
-        hitbox_w = sweep; 
-    } else { 
-        hitbox_h = sweep; 
-        hitbox_w = reach; 
+    for (int i = 1; i <= reach; i++) {
+        bool wall_was_hit = false;
+        
+        int slice_y, slice_x, slice_h, slice_w;
+
+        if (player.last_move_dy != 0) { 
+            slice_h = 1;
+            slice_w = sweep;
+            slice_y = player.y + (i * player.last_move_dy);
+            slice_x = player.x - (sweep / 2);
+        } else {
+            slice_h = sweep;
+            slice_w = 1;
+            slice_y = player.y - (sweep / 2);
+            slice_x = player.x + (i * player.last_move_dx);
+        }
+
+
+        for (int j = 0; j < slice_h; j++) {
+            for (int k = 0; k < slice_w; k++) {
+                int check_y = slice_y + j;
+                int check_x = slice_x + k;
+                if (!map_is_walkable(check_y, check_x)) {
+                    wall_was_hit = true;
+                    break;
+                }
+            }
+            if (wall_was_hit) break;
+        }
+
+
+        if (wall_was_hit) {
+            ui_log_message("Attack was blocked by a wall.");
+            break;
+        } else {
+            hitbox_create(slice_y, slice_x, slice_h, slice_w, 2);
+        }
     }
-
-
-    if (player.last_move_dy == -1){
-        hitbox_y = player.y - hitbox_h;
-        hitbox_x = player.x - (hitbox_w / 2);
-    } else if (player.last_move_dy == 1){
-        hitbox_y = player.y + 1;
-        hitbox_x = player.x - (hitbox_h / 2);
-    } else if (player.last_move_dx == -1){
-        hitbox_y = player.y - (hitbox_h / 2);
-        hitbox_x = player.x - hitbox_w;
-    } else if (player.last_move_dx == 1){
-        hitbox_y = player.y - (hitbox_h / 2);
-        hitbox_x = player.x + 1;
-    }
-
-
-
-
-    hitbox_create(hitbox_y, hitbox_x, hitbox_h, hitbox_w, 3);
-
-
-    char log_buffer[128];
-    snprintf(log_buffer, sizeof(log_buffer), "Slashing with %s.",player.equipped_weapon->name);
-    ui_log_message(log_buffer);
 }

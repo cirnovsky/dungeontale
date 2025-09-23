@@ -6,6 +6,8 @@
 #include <assert.h>
 #include <ncurses.h>
 
+Map *g_world_map = NULL;
+
 void room_draw(Room *room, Map *map) {
 	assert(room != NULL);
 	assert(map != NULL);
@@ -58,31 +60,30 @@ void map_write(Map *map, int x, int y) {
 }
 
 void map_init() {
-	Map *map = NULL;
 
-	map = bsp_generator(MAP_ROOMS_N, MAP_HEIGHT_ACT, MAP_WIDTH_ACT);
+	g_world_map = bsp_generator(MAP_ROOMS_N, MAP_HEIGHT_ACT, MAP_WIDTH_ACT);
 	
 	static char s[114514];
 
-	sprintf(s, "rooms_n: %d", map->rooms_n);
+	sprintf(s, "rooms_n: %d", g_world_map->rooms_n);
 	ui_log_message(s);
 
 	int i;
 
 	for (i = 0; i < MAP_HEIGHT; ++i) {
-		map_set(map, i, 0, TILE_WALL);
-		map_set(map, i, MAP_WIDTH - 1, TILE_WALL);
+		map_set(g_world_map, i, 0, TILE_WALL);
+		map_set(g_world_map, i, MAP_WIDTH - 1, TILE_WALL);
 	}
 	for (i = 0; i < MAP_WIDTH; ++i) {
-		map_set(map, 0, i, TILE_WALL);
-		map_set(map, MAP_HEIGHT - 1, i, TILE_WALL);
+		map_set(g_world_map, 0, i, TILE_WALL);
+		map_set(g_world_map, MAP_HEIGHT - 1, i, TILE_WALL);
 	}
 
-	Room **rooms = map->rooms;
-	int rooms_n = map->rooms_n;
+	Room **rooms = g_world_map->rooms;
+	int rooms_n = g_world_map->rooms_n;
 
 	for (i = 0; i < rooms_n; ++i)
-		room_draw(rooms[i], map);
+		room_draw(rooms[i], g_world_map);
 
-	map_write(map, 0, 0);
+	map_write(g_world_map, 0, 0);
 }

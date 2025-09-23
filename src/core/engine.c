@@ -17,6 +17,8 @@ void engine_init() {
     hitbox_init(); 
     ui_log_message("Use arrow keys to move.");
     ui_log_message("Press 'q' to quit.");
+    int number_of_ball = 0;
+    ui_log_message("Wgy has %d balls.", number_of_ball);
 }
 
 void engine_run() {
