@@ -9,6 +9,8 @@ typedef struct BSPNode {
 	Room *room; // for leaf nodes only
 } BSPNode;
 
+BSPNode *BSPNode_create(Room *room);
+void BSPNode_destroy(BSPNode *node);
 BSPNode *bsp_tree(int h, int w, int x, int y, int min_h, int min_w, int *count_rooms);
 
 #endif

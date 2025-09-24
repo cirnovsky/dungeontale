@@ -7,3 +7,9 @@ dungeontale
 
 **/*.DS_Store
 tags
+
+**/*.un~
+
+test.dSYM
+
+struct

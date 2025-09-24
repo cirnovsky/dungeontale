@@ -34,6 +34,15 @@ void room_draw(Room *room, Map *map) {
 	map_set(map, start_x, start_y + width - 1, TILE_WALL_COR_RU);
 	map_set(map, start_x + height - 1, start_y, TILE_WALL_COR_LD);
 	map_set(map, start_x + height - 1, start_y + width - 1, TILE_WALL_COR_RD);
+
+	Port **ports = room->ports;
+	int ports_n = room->ports_n;
+	
+	for (i = 0; i < ports_n; ++i) {
+		int lrud = ports[i]->LRUD, offset = ports[i]->offset;
+
+		map_set(map, start_x + offset * (lrud < 2) + (height - 1) * (lrud == 3), start_y + offset * (lrud >= 2) + (width - 1) * (lrud == 1), TILE_PORT);
+	}
 }
 
 wchar_t map_layout[MAP_HEIGHT + 1][MAP_WIDTH + 1];

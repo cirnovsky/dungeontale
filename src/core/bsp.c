@@ -28,6 +28,9 @@ BSPNode *bsp_tree(int h, int w, int x, int y, int min_h, int min_w, int *count_r
 		int w_ = rng_range(4, w);
 
 		node->room = room_create(h_, w_, x, y);
+
+		room_set_port(node->room, port_create(0, 0));
+
 		(*count_rooms)++;
 		return node;
 	}
