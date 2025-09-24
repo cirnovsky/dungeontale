@@ -42,8 +42,6 @@ void map_destroy(Map *map) {
 	free(map);
 }
 
-static wchar_t map_layout[MAP_HEIGHT][MAP_WIDTH + 1];
-
 void map_set(Map *map, int x, int y, int code) {
 	assert(map != NULL);
 

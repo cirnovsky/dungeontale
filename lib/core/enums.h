@@ -23,12 +23,13 @@ enum Tiles {
 	TILE_WALL_COR_RU,
 	TILE_WALL_COR_LD,
 	TILE_WALL_COR_RD,
-	TILE_ON,
-	TILE_OFF,
 	TILE_PORT,
 	TILE_N
 };
 
-//void enums_init();
+enum Tile01 {
+	TILE_OFF = 0,
+	TILE_ON = 1
+};
 
 #endif

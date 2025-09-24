@@ -1,7 +1,8 @@
 //19/09/2025: 我严重怀疑房间变大bug出自相对坐标, 我把定位方式改成了绝对坐标
 //indeed
-#include "game/room.h"
 #include "core/enums.h"
+#include "core/utils.h"
+#include "game/room.h"
 #include <stdlib.h>
 
 Room *room_create(int height, int width, int x, int y) {
@@ -16,6 +17,21 @@ Room *room_create(int height, int width, int x, int y) {
 	room->ports = NULL;
 
 	return room;
+}
+
+void room_set_port(Room *room, Port *port) {
+	assert(room != NULL);
+	assert(port != NULL);
+
+	int lrud = port->LRUD, offset = port->offset;
+	int height = room->height, width = room->width;
+
+	if (lrud < 2)
+		assert(offset < width);
+	else
+		assert(offset < height);
+	
+	PUSH_BACK(room->ports, room->ports_n, port);
 }
 
 void room_get_start(Room *room, int *x, int *y) {

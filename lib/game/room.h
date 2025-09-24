@@ -19,6 +19,7 @@ typedef struct {
 } Room;
 
 Room *room_create(int height, int width, int start_x, int start_y);
+void room_set_port(Room *room, Port *port);
 void room_start_coord(Room *room);
 void room_destroy(Room *room);
 void room_get_start(Room *room, int *x, int *y);
