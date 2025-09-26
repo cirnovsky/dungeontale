@@ -67,7 +67,7 @@ void ui_draw() {
     map_draw();
 
     hitbox_draw_all(win_main);
-
+    monsters_draw_all(win_main);
     player_draw(win_main);
 
     wrefresh(win_main);

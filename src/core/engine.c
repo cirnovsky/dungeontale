@@ -3,6 +3,7 @@
 #include "game/player.h"
 #include "game/map.h"
 #include "core/renderer.h"
+#include "game/monster.h"
 #include "core/mapinit.h"
 #include "game/hitbox.h"
 #include <unistd.h> 
@@ -14,6 +15,7 @@ void engine_init() {
     player_init();
     nodelay(stdscr, TRUE);
     map_init();
+    monsters_init();
     hitbox_init(); 
     ui_log_message("Use arrow keys to move.");
     ui_log_message("Press 'q' to quit.");
@@ -46,7 +48,8 @@ void engine_run() {
             player.attack_cooldown--;
         }
         hitbox_update_all(); 
-        player_update(game_timer); 
+        player_update(game_timer);
+        monsters_update_all();
         
         usleep(30000);
     }
