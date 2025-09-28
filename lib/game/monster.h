@@ -4,6 +4,8 @@
 #include "../common.h"
 #include <ncurses.h>
 
+#define MAX_MONSTERS 20
+
 struct Player;
 struct Monster;
 struct MonsterTemplate;
@@ -13,6 +15,7 @@ typedef struct MonsterTemplate {
     wchar_t symbol;
     short color_pair;
     int max_hp;
+    int move_speed;
     void (*on_update)(struct Monster *self, struct Player *player);
 
 } MonsterTemplate;
@@ -20,7 +23,9 @@ typedef struct MonsterTemplate {
 typedef struct Monster {
     int y, x;                   
     int hp;                     
-    bool active;               
+    bool active;
+    int move_cooldown;    
+    char name[250];           
     
     const MonsterTemplate *template; 
     
@@ -28,9 +33,13 @@ typedef struct Monster {
 } Monster;
 
 
+extern Monster g_monsters[MAX_MONSTERS];
+
 void monsters_init(void);
 void monsters_update_all(void);
 void monsters_draw_all(WINDOW *win);
+void monster_die(Monster *monster);
+void generate_monster_name(Monster *monster);
 
 #endif
 

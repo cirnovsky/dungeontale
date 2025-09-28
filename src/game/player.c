@@ -12,7 +12,7 @@
 Player player;
 
 static Weapon cirnov_dagger = {
-    .attack_sweep = 3,
+    .attack_sweep = 1,
     .attack_reach = 2,
     .weight = 1,
     .name = "cirnov's tiny dagger"
@@ -26,7 +26,7 @@ void player_init(){
     player.target_dy = 0;
     player.last_move_dx = 0;
     player.last_move_dy = 1; 
-    player.attack_cooldown = 0;
+    player.attack_cooldown = 5;
     player.last_move_time = 0; 
     player.equipped_weapon = &cirnov_dagger;
     player.attack_cooldown = 0;
@@ -87,27 +87,25 @@ void player_attack() {
         return;
     }
 
+    int length = player.equipped_weapon->attack_reach; 
+    int width = player.equipped_weapon->attack_sweep;   
 
-    int reach = player.equipped_weapon->attack_reach;
-    int sweep = player.equipped_weapon->attack_sweep;
-
-    for (int i = 1; i <= reach; i++) {
+    for (int i = 1; i <= length; i++) { 
         bool wall_was_hit = false;
         
         int slice_y, slice_x, slice_h, slice_w;
 
         if (player.last_move_dy != 0) { 
             slice_h = 1;
-            slice_w = sweep;
+            slice_w = width; 
             slice_y = player.y + (i * player.last_move_dy);
-            slice_x = player.x - (sweep / 2);
-        } else {
-            slice_h = sweep;
+            slice_x = player.x - (width / 2); 
+        } else { 
+            slice_h = width; 
             slice_w = 1;
-            slice_y = player.y - (sweep / 2);
+            slice_y = player.y - (width / 2); 
             slice_x = player.x + (i * player.last_move_dx);
         }
-
 
         for (int j = 0; j < slice_h; j++) {
             for (int k = 0; k < slice_w; k++) {
@@ -121,7 +119,6 @@ void player_attack() {
             if (wall_was_hit) break;
         }
 
-
         if (wall_was_hit) {
             ui_log_message("Attack was blocked by a wall.");
             break;
@@ -129,4 +126,5 @@ void player_attack() {
             hitbox_create(slice_y, slice_x, slice_h, slice_w, 2);
         }
     }
+    player.attack_cooldown = 5;
 }
