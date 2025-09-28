@@ -8,6 +8,8 @@
 #include "game/hitbox.h"
 #include <unistd.h> 
 
+extern Monster g_monsters[];
+extern Hitbox g_hitboxes[];
 
 void engine_init() {
     ui_init();
@@ -51,6 +53,25 @@ void engine_run() {
         player_update(game_timer);
         monsters_update_all();
         
+        for (int i = 0; i < MAX_HITBOXES; ++i) {
+            if (!g_hitboxes[i].active) continue;
+            
+            Hitbox *hb = &g_hitboxes[i];
+            
+            for (int j = 0; j < MAX_MONSTERS; ++j) {
+                if (!g_monsters[j].active) continue;
+
+                Monster *m = &g_monsters[j];
+
+                if (m->y >= hb->y && m->y < (hb->y + hb->height) &&
+                    m->x >= hb->x && m->x < (hb->x + hb->width)) 
+                {
+                    ui_log_message("Ouch!");
+                    monster_die(m);
+                }
+            }
+        }
+
         usleep(30000);
     }
 }

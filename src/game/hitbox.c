@@ -4,9 +4,8 @@
 #include "core/ui.h"
 #include <stdio.h>
 
-#define MAX_HITBOXES 10
 
-static Hitbox g_hitboxes[MAX_HITBOXES];
+Hitbox g_hitboxes[MAX_HITBOXES];
 
 void hitbox_init() {
     for (int i = 0; i < MAX_HITBOXES; ++i) {
