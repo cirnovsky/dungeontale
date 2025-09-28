@@ -34,11 +34,45 @@ void room_set_port(Room *room, Port *port) {
 	PUSH_BACK(room->ports, room->ports_n, port);
 }
 
+void room_set_port_middle(Room *room, int lrud) {
+	assert(room != NULL);
+
+	int height = room->height, width = room->width;
+	int offset;
+
+	if (lrud < 2)
+		offset = height / 2;
+	else
+		offset = width / 2;
+
+	PUSH_BACK(room->ports, room->ports_n, port_create(lrud, offset));
+}
+
+void room_get_port_coordinate(Room *room, int port, int *x, int *y) {
+	assert(room != NULL);
+
+	int height = room->height, width = room->width;
+	int startx, starty;
+
+	room_get_start(room, &startx, &starty);
+
+	Port **ports = room->ports;
+	int ports_n = room->ports_n;
+
+	assert(0 <= port && port < ports_n);
+
+	int lrud = ports[port]->LRUD, offset = ports[port]->offset;
+
+	*x = startx + (lrud < 2) * offset + (lrud == 3) * (height - 1);
+	*y = starty + (lrud >= 2) * offset + (lrud == 1) * (width - 1);
+}
+
 void room_get_start(Room *room, int *x, int *y) {
 //	int width = room->width, start = room->start;
 
 //	*x = start / width;
 //	*y = start % width;
+	assert(room != NULL);
     *x = room->x;
     *y = room->y;
 }

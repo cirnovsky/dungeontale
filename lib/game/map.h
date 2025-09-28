@@ -9,11 +9,13 @@
 
 #include <ncurses.h>
 #include "room.h"
+#include "corridor.h"
 
 typedef struct {
-	int rooms_n;
+	int rooms_n, corridors_n;
 	int height, width;
 	Room **rooms;
+	Corridor **corridors;
 	Tile **tiles;
 } Map;
 
@@ -23,6 +25,7 @@ Map *map_create(int rooms_n, int height, int width);
 void map_destroy(Map *map);
 void map_set(Map *map, int x, int y, int code);
 Tile *map_get_tile(Map *map, int x, int y);
+void map_append_corridor(Map *map, Corridor *corridor);
 
 void map_draw(WINDOW *win);
 bool map_is_walkable(int y, int x);
