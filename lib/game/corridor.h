@@ -3,20 +3,25 @@
  * two rooms on PORTS.
 */
 
-#include "room.h"
+#ifndef CORRIDOR_H
+#define CORRIDOR_H
+
+#include "game/room.h"
+#include "game/tile.h"
 
 /*
- * @length = #tiles on @path
+ * @tiles_n = #tiles on path
  * @port, @port_: two PORTS that the CORRIDOR connects
 */
 typedef struct {
-	int length;
-	Port *port, *port_;
-	Tile *path;
+	Room *room, *room_;
+	int port, port_;
+	int tiles_n;
+	Tile **tiles;
 } Corridor;
 
-Corridor corridor_create(Room *room, Room *room_) {
-	Corridor *corridor = malloc(sizeof(Corridor));
-	corridor->room = room;
-	corridor->room_ = room_;
-}
+Corridor *corridor_create();
+void corridor_append_tile(Corridor *corridor, Tile *tile);
+void corridor_destroy(Corridor *corridor);
+
+#endif

@@ -60,5 +60,6 @@ void handle_resize(){
 }
 
 void engine_shutdown() {
+	//map_destroy(g_world_map);
     ui_shutdown();
 }

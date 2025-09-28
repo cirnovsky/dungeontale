@@ -4,6 +4,5 @@
 #include "core/bsp.h"
 
 Map *bsp_generator(int rooms_n, int height, int width);
-void bsp_flat(BSPNode *node, Room **rooms, int *cnt);
 
 #endif

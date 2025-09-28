@@ -35,6 +35,11 @@ void room_draw(Room *room, Map *map) {
 	map_set(map, start_x + height - 1, start_y, TILE_WALL_COR_LD);
 	map_set(map, start_x + height - 1, start_y + width - 1, TILE_WALL_COR_RD);
 
+	for (i = 1; i < height - 1; ++i) {
+		for (j = 1; j < width - 1; ++j)
+			map_set(map, start_x + i, start_y + j, TILE_ROOM);
+	}
+
 	Port **ports = room->ports;
 	int ports_n = room->ports_n;
 	
@@ -43,6 +48,15 @@ void room_draw(Room *room, Map *map) {
 
 		map_set(map, start_x + offset * (lrud < 2) + (height - 1) * (lrud == 3), start_y + offset * (lrud >= 2) + (width - 1) * (lrud == 1), TILE_PORT);
 	}
+}
+
+void corridor_draw(Corridor *corridor) {
+	int n = corridor->tiles_n;
+	Tile **tiles = corridor->tiles;
+	int i;
+
+	for (i = 0; i < n; ++i)
+		tile_draw(tiles[i], TILE_CORRIDOR);
 }
 
 wchar_t map_layout[MAP_HEIGHT + 1][MAP_WIDTH + 1];
@@ -93,6 +107,12 @@ void map_init() {
 
 	for (i = 0; i < rooms_n; ++i)
 		room_draw(rooms[i], g_world_map);
+
+	Corridor **corridors = g_world_map->corridors;
+	int corridors_n = g_world_map->corridors_n;
+
+	for (i = 0; i < corridors_n; ++i)
+		corridor_draw(corridors[i]);
 
 	map_write(g_world_map, 0, 0);
 }
