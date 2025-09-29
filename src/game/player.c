@@ -123,7 +123,7 @@ void player_attack() {
             ui_log_message("Attack was blocked by a wall.");
             break;
         } else {
-            hitbox_create(slice_y, slice_x, slice_h, slice_w, 2);
+            hitbox_create(slice_y, slice_x, slice_h, slice_w, 3);
         }
     }
     player.attack_cooldown = 5;
