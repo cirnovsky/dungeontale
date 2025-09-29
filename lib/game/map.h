@@ -27,8 +27,7 @@ void map_set(Map *map, int x, int y, int code);
 Tile *map_get_tile(Map *map, int x, int y);
 void map_append_corridor(Map *map, Corridor *corridor);
 
-void map_draw(WINDOW *win);
 bool map_is_walkable(int y, int x);
-
+int map_count_visible_tiles(void);
 #endif
 

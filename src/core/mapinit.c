@@ -65,6 +65,8 @@ wchar_t map_layout[MAP_HEIGHT + 1][MAP_WIDTH + 1];
  * Write part of @*map to @map_layout
  * starting from (@x, @y)
 */
+
+/*
 void map_write(Map *map, int x, int y) {
 	assert(map != NULL);
 
@@ -81,6 +83,52 @@ void map_write(Map *map, int x, int y) {
 		map_layout[i][MAP_WIDTH] = '\0';
 	}
 }
+*/
+void map_write(Map *map, int x, int y) { 
+	assert(map != NULL);
+
+	int i, j;
+
+	for (i = 0; i < MAP_HEIGHT; ++i) {
+		for (j = 0; j < MAP_WIDTH; ++j) {
+			int world_row = i + x;
+			int world_col = j + y;
+
+			if (world_row >= 0 && world_row < map->height &&
+			    world_col >= 0 && world_col < map->width)
+			{
+				Tile *tile = map_get_tile(map, world_row, world_col);
+
+				if (tile->is_visible) {
+					map_layout[i][j] = tile_display(tile);
+				} 
+				else if (tile->is_explored) {
+					switch (tile->code) {
+						case TILE_WALL:
+						case TILE_WALL_HOR:
+						case TILE_WALL_VER:
+						case TILE_WALL_COR_LU:
+						case TILE_WALL_COR_RU:
+						case TILE_WALL_COR_LD:
+						case TILE_WALL_COR_RD:
+						case TILE_PORT: 
+							map_layout[i][j] = tile_display(tile);
+							break;
+						default:
+							map_layout[i][j] = L' ';
+							break;
+					}
+				} else {
+					map_layout[i][j] = L' ';
+				}
+			} else {
+				map_layout[i][j] = L' ';
+			}
+		}
+		map_layout[i][MAP_WIDTH] = L'\0';
+	}
+}
+
 
 void map_init() {
 
@@ -115,4 +163,5 @@ void map_init() {
 		corridor_draw(corridors[i]);
 
 	map_write(g_world_map, 0, 0);
+
 }

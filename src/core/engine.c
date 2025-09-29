@@ -6,6 +6,7 @@
 #include "game/monster.h"
 #include "core/mapinit.h"
 #include "game/hitbox.h"
+#include "core/fov.h"
 #include <unistd.h> 
 
 extern Monster g_monsters[];
@@ -18,7 +19,8 @@ void engine_init() {
     nodelay(stdscr, TRUE);
     map_init();
     monsters_init();
-    hitbox_init(); 
+    hitbox_init();
+    fov_update(); 
     ui_log_message("Use arrow keys to move.");
     ui_log_message("Press 'q' to quit.");
     int number_of_ball = 0;
@@ -51,6 +53,7 @@ void engine_run() {
         }
         hitbox_update_all(); 
         player_update(game_timer);
+        fov_update();
         monsters_update_all();
         
         for (int i = 0; i < MAX_HITBOXES; ++i) {

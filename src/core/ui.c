@@ -8,6 +8,8 @@
 #include <ncurses.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include "game/monster.h"
+#include "game/map.h"
 
 WINDOW *win_main;
 WINDOW *win_log;
@@ -63,12 +65,23 @@ void ui_draw() {
     box(win_log, 0, 0);
     mvwprintw(win_log, 0, 2, " Battle Log ");
 
+    map_write(g_world_map, 0, 0);
 
     map_draw();
 
     hitbox_draw_all(win_main);
     monsters_draw_all(win_main);
     player_draw(win_main);
+
+
+    int visible_tile_count = map_count_visible_tiles();
+
+    char debug_hud_text[100];
+    sprintf(debug_hud_text, "Visible Tiles: %d", visible_tile_count);
+    
+    mvwprintw(win_main, 1, 2, debug_hud_text);
+
+
 
     wrefresh(win_main);
     wrefresh(win_log);
