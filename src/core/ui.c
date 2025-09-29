@@ -4,6 +4,7 @@
 #include "core/enums.h"
 #include "game/player.h"
 #include "game/hitbox.h"
+#include "game/monster.h"
 #include <locale.h>
 #include <ncurses.h>
 #include <stdarg.h>
