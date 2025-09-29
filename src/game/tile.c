@@ -6,7 +6,8 @@
 
 Tile *tile_create(int code) {
 	Tile *tile = malloc(sizeof(Tile));
-
+    tile->is_visible = false;
+    tile->is_explored = false;
 	tile_draw(tile, code);
 	tile_set_state(tile, TILE_ON);
 
@@ -35,7 +36,9 @@ void tile_draw(Tile *tile, int code) {
 	tile->code = code;
 }
 
+
 wchar_t tile_display(Tile *tile) {
 	assert(tile != NULL);
 	return LEGENDS[tile->code];
 }
+

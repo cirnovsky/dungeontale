@@ -30,6 +30,7 @@ void player_init(){
     player.last_move_time = 0; 
     player.equipped_weapon = &cirnov_dagger;
     player.attack_cooldown = 0;
+    player.fov_radius = 2;
 }
 
 void player_draw(WINDOW *win){

@@ -14,6 +14,7 @@ typedef struct {
     int last_move_dy;
     int attack_cooldown;
     int last_move_time;
+    int fov_radius;
     Weapon *equipped_weapon;
 } Player;
 

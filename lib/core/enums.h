@@ -10,7 +10,7 @@
 #define MAP_HEIGHT_ACT	40
 #define MAP_WIDTH_ACT	120
 
-extern const wchar_t *LEGENDS;
+extern const wchar_t LEGENDS[];
 
 enum Tiles {
 	TILE_EMPTY = 0,

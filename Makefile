@@ -3,9 +3,9 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -Ilib -D_DEFAULT_SOURCE -D_XOPEN_SOURCE_EXTENDED -g
 
 ifeq ($(shell uname), Darwin)
-    LDFLAGS = -lncurses
+    LDFLAGS = -lncurses -lm
 else
-    LDFLAGS = -lncursesw
+    LDFLAGS = -lncursesw -lm
 endif
 
 # All sources except test.c and main.c

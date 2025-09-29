@@ -107,7 +107,12 @@ void monsters_draw_all(WINDOW *win) {
     for (int i = 0; i < MAX_MONSTERS; ++i) {
         if (g_monsters[i].active) {
             Monster *m = &g_monsters[i];
-            
+           
+            Tile *tile_under_monster = map_get_tile(g_world_map, m->y, m->x);
+            if (!tile_under_monster->is_visible) {
+                continue;
+            }
+
             Sprite monster_sprite = {
                 .symbol = m->template->symbol,
                 .fg_color = m->template->color_pair,

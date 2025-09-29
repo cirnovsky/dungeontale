@@ -104,3 +104,20 @@ bool map_is_walkable(int y, int x){
             return true;
     }
 }
+
+
+int map_count_visible_tiles(void) {
+    if (g_world_map == NULL) {
+        return -1;
+    }
+    
+    int count = 0;
+    int total_tiles = g_world_map->height * g_world_map->width;
+    
+    for (int i = 0; i < total_tiles; i++) {
+        if (g_world_map->tiles[i]->is_visible) {
+            count++;
+        }
+    }
+    return count;
+}
