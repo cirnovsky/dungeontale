@@ -74,12 +74,7 @@ void ui_draw() {
     player_draw(win_main);
 
 
-    int visible_tile_count = map_count_visible_tiles();
-
-    char debug_hud_text[100];
-    sprintf(debug_hud_text, "Visible Tiles: %d", visible_tile_count);
     
-    mvwprintw(win_main, 1, 2, debug_hud_text);
 
 
 
