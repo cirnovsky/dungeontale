@@ -130,7 +130,7 @@ void map_write(Map *map, int x, int y) {
 }
 
 
-void map_init() {
+void map_init(int *hero_x, int *hero_y) {
 
 	g_world_map = bsp_generator(MAP_ROOMS_N, MAP_HEIGHT_ACT, MAP_WIDTH_ACT);
 	
@@ -155,6 +155,8 @@ void map_init() {
 
 	for (i = 0; i < rooms_n; ++i)
 		room_draw(rooms[i], g_world_map);
+
+	room_get_random_coordinate(rooms[0], hero_x, hero_y);
 
 	Corridor **corridors = g_world_map->corridors;
 	int corridors_n = g_world_map->corridors_n;

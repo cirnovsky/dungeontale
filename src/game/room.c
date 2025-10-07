@@ -67,6 +67,18 @@ void room_get_port_coordinate(Room *room, int port, int *x, int *y) {
 	*y = starty + (lrud >= 2) * offset + (lrud == 1) * (width - 1);
 }
 
+void room_get_random_coordinate(Room *room, int *x, int *y) {
+	assert(room != NULL);
+
+	int height = room->height, widht = room->width;
+	int sx, sy;
+
+	room_get_start(room, &sx, &sy);
+
+	*x = sx + rng_range(0, height);
+	*y = sy + rng_range(0, width);
+}
+
 void room_get_start(Room *room, int *x, int *y) {
 //	int width = room->width, start = room->start;
 

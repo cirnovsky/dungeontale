@@ -25,5 +25,6 @@ void room_set_port_middle(Room *room, int lrud);
 void room_get_port_coordinate(Room *room, int ind, int *x, int *y);
 void room_destroy(Room *room);
 void room_get_start(Room *room, int *x, int *y);
+void room_get_random_coordinate(Room *room, int *x, int *y);
 
 #endif
