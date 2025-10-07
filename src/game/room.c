@@ -75,8 +75,8 @@ void room_get_random_coordinate(Room *room, int *x, int *y) {
 
 	room_get_start(room, &sx, &sy);
 
-	*x = sx + rng_range(0, height);
-	*y = sy + rng_range(0, width);
+	*x = sx + rng_range(1, height - 1);
+	*y = sy + rng_range(1, width - 1);
 }
 
 void room_get_start(Room *room, int *x, int *y) {
