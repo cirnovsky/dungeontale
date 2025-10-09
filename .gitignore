@@ -13,3 +13,7 @@ tags
 test.dSYM
 
 struct
+
+./.cache
+
+./compile_commands.json
