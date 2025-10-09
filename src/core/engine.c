@@ -1,7 +1,6 @@
 #include "core/engine.h"
 #include "core/ui.h"
 #include "game/player.h"
-#include "game/map.h"
 #include "core/renderer.h"
 #include "game/monster.h"
 #include "core/mapinit.h"
@@ -13,11 +12,13 @@ extern Monster g_monsters[];
 extern Hitbox g_hitboxes[];
 
 void engine_init() {
+    int x, y;
+    
     ui_init();
     renderer_init();
-    player_init();
     nodelay(stdscr, TRUE);
-    map_init();
+    map_init(&x, &y);
+    player_init(x, y);
     monsters_init();
     hitbox_init();
     fov_update(); 

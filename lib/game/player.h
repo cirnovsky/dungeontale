@@ -1,7 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../common.h"
 #include "game/weapon.h"
 
 
@@ -20,7 +19,7 @@ typedef struct {
 
 extern Player player;
 
-void player_init();
+void player_init(int, int );
 void player_draw(WINDOW *win);
 void player_set_move_target(int ch);
 void player_update(int game_timer);

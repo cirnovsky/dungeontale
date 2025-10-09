@@ -1,7 +1,6 @@
 #include <locale.h>
 #include "game/player.h"
 #include "game/weapon.h"
-#include "game/hitbox.h"
 #include "core/renderer.h"
 #include "game/map.h"
 #include "core/ui.h"
@@ -19,9 +18,9 @@ static Weapon cirnov_dagger = {
 };
 
 
-void player_init(){
-    player.y = 5;
-    player.x = 5;
+void player_init(int X, int Y){
+    player.y = X;
+    player.x = Y;
     player.target_dx = 0; 
     player.target_dy = 0;
     player.last_move_dx = 0;

@@ -1,7 +1,7 @@
 //19/09/2025: 我严重怀疑房间变大bug出自相对坐标, 我把定位方式改成了绝对坐标
 //indeed
-#include "core/enums.h"
 #include "core/utils.h"
+#include "core/rng.h"
 #include "game/room.h"
 #include <stdlib.h>
 
@@ -70,7 +70,7 @@ void room_get_port_coordinate(Room *room, int port, int *x, int *y) {
 void room_get_random_coordinate(Room *room, int *x, int *y) {
 	assert(room != NULL);
 
-	int height = room->height, widht = room->width;
+	int height = room->height, width = room->width;
 	int sx, sy;
 
 	room_get_start(room, &sx, &sy);
