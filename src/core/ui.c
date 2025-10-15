@@ -1,125 +1,146 @@
-#define _XOPEN_SOURCE_EXTENDED 1
 #include "core/ui.h"
+#include "core/texture.h"
 #include "core/mapinit.h"
 #include "core/enums.h"
 #include "game/player.h"
 #include "game/hitbox.h"
 #include "game/monster.h"
-#include <locale.h>
-#include <ncurses.h>
-#include <stdarg.h>
-#include <stdio.h>
 #include "game/monster.h"
 #include "game/map.h"
+#include "common.h"
+#include "SDL.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include <assert.h>
 
-WINDOW *win_main;
-WINDOW *win_log;
-
-void map_draw(){
-    for (int y = 0; y < MAP_HEIGHT; ++y)
-        mvwaddwstr(win_main, y+1, 1, map_layout[y]);
+WindowArea *mynewwin(int x, int y, int h, int w) {
+	WindowArea *win = malloc(sizeof(WindowArea));
+	win->x = x;
+	win->y = y;
+	win->h = h;
+	win->w = w;
+	return win;
 }
+
+WindowArea *win_main;
+WindowArea *win_log;
+WindowArea *win_inv; // inventory
 
 void ui_init() {
-	setlocale(LC_ALL, "");
-    initscr();
-    cbreak();
-    noecho();
-    curs_set(0);
-    keypad(stdscr, TRUE);
-
-    int term_h, term_w;
-    getmaxyx(stdscr, term_h, term_w);
-
-    win_main = newwin(term_h, term_w, 0, term_w / 5);
-    win_log = newwin(term_h / 3, term_w / 5, 0, 0);
-    
-    scrollok(win_log, TRUE);
-    
-    refresh();
+	win_main = mynewwin(0, 0, TERM_HEIGHT*4/5, TERM_WIDTH);
+	win_log = mynewwin(TERM_HEIGHT*4/5, 0, TERM_HEIGHT - TERM_HEIGHT*4/5 - 2, TERM_WIDTH);
+	win_inv = mynewwin(TERM_HEIGHT-2, 0, 2, TERM_WIDTH);
 }
 
-void ui_recreate_windos() {
-    if (win_main) delwin(win_main);
-    if (win_log) delwin(win_log);
+void ui_shutdown() {}
+enum {
+	LVL_HEIGHT = TERM_HEIGHT-4,
+	LVL_WIDTH  = TERM_WIDTH,
+}; // TODO delete
 
-    int term_h, term_w;
-    getmaxyx(stdscr, term_h, term_w);
-
-    win_main = newwin(term_h, term_w - term_w/5, 0, term_w / 5);
-    win_log = newwin(term_h / 3, term_w / 5, 0, 0);
-    scrollok(win_log, TRUE);
-    keypad(win_main, TRUE);
-
+void map_draw(texture *t, int x, int y)
+{
+	int h = win_main->h, w = win_main->w;
+	for (int i = x; i < x+h; ++i) {
+		for (int j = y; j < y+w; ++j) {
+			unsigned char ch = TILE_EMPTY;
+			int fg = 0x000000;
+			if (0 <= i && i < MAP_HEIGHT && 0 <= j && j < MAP_WIDTH) {
+				ch = map_layout[i][j];
+				fg = mapfg[i][j];
+			}
+			drawch(t, ch, i-x+1, j-y+1, fg);
+		}
+	}
 }
 
-void ui_shutdown() {
-    delwin(win_main);
-    delwin(win_log);
-    endwin();
+void inv_draw(texture *t) {
+	int x = TERM_HEIGHT-1, y = TERM_WIDTH/2 - 20;
+
+	draws(t, "HP: 100/100    GOLD:  3/80    MANA:    1/9", -1, x, y, 0xff00ff);
 }
 
-void ui_draw() {
-    werase(win_main);
+char *logmsg;
 
-    box(win_main, 0 , 0);
-    box(win_log, 0, 0);
-    mvwprintw(win_log, 0, 2, " Battle Log ");
+void ui_draw(Engine *engine) {
+	void *pixels;
+	texture t[1] = {0};
+	SDL_LockTexture(engine
+			->terminal, 0, &pixels, &t->pitch);
+	t->pixels = SDL_memset(pixels, 0, engine->height*t->pitch);
 
-    map_write(g_world_map, 0, 0);
+	static int x = 0, y = 0;
+	int px = player.y, py = player.x;
+	int h = win_main->h, w = win_main->w;
 
-    map_draw();
+	if (x - px < h / 10 || x - px > h * 9 / 10) {
+		x = px - h / 2;
+	}
+	if (y - py < w / 10 || y - py > w * 9 / 10) {
+		y = py - w / 2;
+	}
 
-    hitbox_draw_all(win_main);
-    monsters_draw_all(win_main);
-    player_draw(win_main);
+	map_draw(t, x, y);
+	inv_draw(t);
+	draws(t, logmsg, -1, 0, 0, 0xffffff);
+	hitbox_draw_all(win_main, t, x, y);
+	monsters_draw_all(win_main, t, x, y);
+	player_draw(win_main, t, x, y);
 
-
-    
-
-
-
-    wrefresh(win_main);
-    wrefresh(win_log);
+	SDL_UnlockTexture(engine->terminal);
+	SDL_RenderCopy(engine->renderer, engine->terminal, 0, 0);
+	SDL_RenderPresent(engine->renderer);
 }
-
+void ui_recreate_windos() {}
 void ui_log_message(const char *format, ...) {
+	static char formatted_message[512];
+	va_list args;
 
-    char formatted_message[512];
-    va_list args;
+	va_start(args, format);
+	vsnprintf(formatted_message, sizeof(formatted_message), format, args);
+	va_end(args);
 
-    va_start(args, format);
-    vsnprintf(formatted_message, sizeof(formatted_message), format, args);
-    va_end(args);
-
-
-    int log_h, log_w;
-    getmaxyx(win_log, log_h, log_w);
-    int content_w = log_w - 2;
-
-    char *msg_copy = strdup(formatted_message);
-    if (!msg_copy) return;
-
-    wscrl(win_log, 1);
-    wmove(win_log, log_h - 2, 1);
-    wprintw(win_log, "> ");
-
-    char *word = strtok(msg_copy, " ");
-    while (word != NULL) {
-        if (getcurx(win_log) + (int)strlen(word) + 1 > content_w) {
-            wscrl(win_log, 1); 
-            wmove(win_log, log_h - 2, 1); 
-            wprintw(win_log, "  "); 
-        }
-
-        wprintw(win_log, "%s ", word);
-        
-        word = strtok(NULL, " ");
-    }
-    
-    free(msg_copy);
-
-    box(win_log, 0, 0);
-    mvwprintw(win_log, 0, 2, " Battle Log ");
-    wrefresh(win_log);
+	// For now, just print to console - in a full implementation,
+	// you'd want to maintain a log buffer and display it in the log window
+	logmsg = formatted_message;
+}
+int ui_get_input() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_QUIT:
+				return KEY_ESC;
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+					case SDL_QUIT:
+						return KEY_ESC;
+					case SDLK_UP:
+						return KEY_UP;
+					case SDLK_DOWN:
+						return KEY_DOWN;
+					case SDLK_LEFT:
+						return KEY_LEFT;
+					case SDLK_RIGHT:
+						return KEY_RIGHT;
+					case SDLK_ESCAPE:
+						return KEY_ESC;
+					case SDLK_q:
+						return 'q';
+					case SDLK_w:
+						return 'w';
+					case SDLK_a:
+						return 'a';
+					case SDLK_s:
+						return 's';
+					case SDLK_d:
+						return 'd';
+					case SDLK_SPACE:
+						return ' ';
+					default:
+						return event.key.keysym.sym;
+				}
+				break;
+		}
+	}
+	return 0; // No input
 }

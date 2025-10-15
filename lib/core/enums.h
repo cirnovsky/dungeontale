@@ -1,7 +1,11 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-#include <wchar.h>
+#define TERM_WIDTH 80
+#define TERM_HEIGHT 24
+#define TERM_SCALE 2
+#define FONT_WIDTH 9
+#define FONT_HEIGHT 16
 
 #define MAP_HEIGHT	40
 #define MAP_WIDTH	120
@@ -10,7 +14,7 @@
 #define MAP_HEIGHT_ACT	40
 #define MAP_WIDTH_ACT	120
 
-extern const wchar_t LEGENDS[];
+extern const unsigned char LEGENDS[];
 
 enum Tiles {
 	TILE_EMPTY = 0,

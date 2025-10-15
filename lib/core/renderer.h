@@ -2,10 +2,11 @@
 #define RENDERER_H
 
 #include "../common.h"
-#include <wchar.h>
+#include "core/ui.h"
+#include "core/texture.h"
 
 typedef struct {
-    wchar_t symbol;
+    unsigned char symbol;
     short fg_color;
     short bg_color;
     int attributes;
@@ -13,8 +14,8 @@ typedef struct {
 
 void renderer_init();
 
-void renderer_draw_sprite(WINDOW *win, int y, int x, const Sprite *sprite);
+void renderer_draw_sprite(WindowArea *win, texture *t, int y, int x, const Sprite *sprite);
 
-void renderer_draw_string(WINDOW *win, int y, int x, const char *text, short fg, short bg);
+void renderer_draw_string(WindowArea *win, texture *t, int y, int x, const char *text, short fg, short bg);
 
 #endif

@@ -1,53 +1,30 @@
-#include <ncurses.h>
 #include "core/renderer.h"
-#include <string.h>
-#include <wchar.h>
+#include "core/texture.h"
 #define MAX_COLOR_PAIRS 256
 
-static struct {
-    short fg;
-    short bg;
-} color_pair_map[MAX_COLOR_PAIRS];
-
-static int num_color_pairs = 1;
-
-short get_or_create_color_pair(short fg, short bg){
-    for (int i = 1; i < num_color_pairs; ++i){
-        if (color_pair_map[i].fg == fg && color_pair_map[i].bg == bg){
-            return i;
-        }    
-    }   
-    if (num_color_pairs < MAX_COLOR_PAIRS){
-        init_pair(num_color_pairs, fg, bg);
-        color_pair_map[num_color_pairs].fg = fg; 
-        color_pair_map[num_color_pairs].bg = bg;
-        return num_color_pairs++;
-        
-    }
-
-    return 1;
-}
-void renderer_init(){
-    if (has_colors()){
-        start_color();        
-
-        use_default_colors();
-    }
+int make_rgb(short fg, short bg)
+{
+	(void)bg;
+	switch (fg) {
+		case 1: return 0xff0000; // red
+		case 2: return 0x00ff00; // green
+		case 3: return 0x0000ff; // blue
+		case 4: return 0xffff00; // yellow
+		case 5: return 0x00ffff; // cyan
+		case 6: return 0xff00ff; // magenta
+		case 7: return 0xffffff; // white
+		default: return 0xaaaaaa; // gray
+	}
 }
 
-void renderer_draw_sprite(WINDOW *win, int y, int x, const Sprite *sprite){
-    short pair_id = get_or_create_color_pair(sprite->fg_color, sprite->bg_color);
+void renderer_draw_sprite(WindowArea *win, texture *t, int y, int x, const Sprite *sprite)
+{
+	unsigned char ch = sprite->symbol;
+	int color = make_rgb(sprite->fg_color, sprite->bg_color);
 
-    wchar_t wch_string[2];
-    wch_string[0] = sprite->symbol;
-    wch_string[1] = L'\0'; 
-
-    cchar_t wc;
-    setcchar(&wc, wch_string, sprite->attributes, pair_id, NULL);
-
-    wattron(win, COLOR_PAIR(pair_id) | sprite->attributes);
-    mvwadd_wch(win, y, x, &wc);
-    wattroff(win, COLOR_PAIR(pair_id) | sprite->attributes);
-
+	drawch(t, ch, y, x, color);
 }
 
+void renderer_draw_string(WindowArea *win, texture *t, int y, int x, const char *text, short fg, short bg)
+{
+}

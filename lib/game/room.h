@@ -1,6 +1,6 @@
 /*
  * This header file defines the ROOM
-*/
+ */
 
 #ifndef ROOM_H
 #define ROOM_H
@@ -11,9 +11,10 @@
 typedef struct {
 	int height, width;
 	//int start;
-//详见room.c的改动
-    int x;
-    int y;
+	//详见room.c的改动
+	int x;
+	int y;
+	int explored;
 	int ports_n;
 	Port **ports;
 } Room;

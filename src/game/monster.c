@@ -6,14 +6,17 @@
 #include "core/renderer.h"
 #include "time.h"
 
-static const char* GOBLIN_FIRST_NAMES[] = {"猥琐的", "发育不良的", "扭曲的", "浮肿的", "骸骨的", "甲壳的", "胶状的", "暴虐的", "腐烂的", "化脓的", "被诅咒的", "染病的", "无魂的", "炉管的", "好色的", "阳痿的"};
+//static const char* GOBLIN_FIRST_NAMES[] = {"猥琐的", "发育不良的", "扭曲的", "浮肿的", "骸骨的", "甲壳的", "胶状的", "暴虐的", "腐烂的", "化脓的", "被诅咒的", "染病的", "无魂的", "炉管的", "好色的", "阳痿的"};
+static const char* GOBLIN_FIRST_NAMES[] = {
+	#include "assets/text/gobfn.c"
+};
 static const char* BAT_FIRST_NAMES[] = {"Suspicious"};
 
 
 
 static const MonsterTemplate GOBLIN_TEMPLATE = {
-    .name = "汪冠宇",
-    .symbol = L'g',
+    .name = "Malon",
+    .symbol = 'g',
     .color_pair = COLOR_GREEN,
     .max_hp = 10,
     .move_speed = 10,
@@ -22,7 +25,7 @@ static const MonsterTemplate GOBLIN_TEMPLATE = {
 
 static const MonsterTemplate BAT_TEMPLATE = {
     .name = "Bat",
-    .symbol = L'b',
+    .symbol = 'b',
     .color_pair = COLOR_YELLOW,
     .max_hp = 5,
     .move_speed = 5,
@@ -103,13 +106,14 @@ void monsters_update_all(void) {
         }
     }
 }
-void monsters_draw_all(WINDOW *win) {
+void monsters_draw_all(WindowArea *win, texture *t, int x, int y) {
     for (int i = 0; i < MAX_MONSTERS; ++i) {
         if (g_monsters[i].active) {
             Monster *m = &g_monsters[i];
            
             Tile *tile_under_monster = map_get_tile(g_world_map, m->y, m->x);
-            if (!tile_under_monster->is_visible) {
+
+            if (!tile_under_monster->is_explored) {
                 continue;
             }
 
@@ -120,7 +124,7 @@ void monsters_draw_all(WINDOW *win) {
                 .attributes = A_NORMAL
             };
             
-            renderer_draw_sprite(win, m->y + 1, m->x + 1, &monster_sprite);
+            renderer_draw_sprite(win, t, m->y - x + 1, m->x - y + 1, &monster_sprite);
         }
     }
 }
@@ -138,7 +142,7 @@ void generate_monster_name(Monster *monster) {
     const char* first_name = "Nameless";
     const char* species_name = monster->template->name;
 
-    if (strcmp(species_name, "汪冠宇") == 0) {
+    if (strcmp(species_name, "Malon") == 0) {
         int name_count = sizeof(GOBLIN_FIRST_NAMES) / sizeof(GOBLIN_FIRST_NAMES[0]);
         first_name = GOBLIN_FIRST_NAMES[rand() % name_count];
     } else if (strcmp(species_name, "Bat") == 0) {

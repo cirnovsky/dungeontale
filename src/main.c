@@ -1,11 +1,11 @@
 #include "core/engine.h"
-#include <locale.h>
 
 int main() {
-    setlocale(LC_ALL, "");
-
-    engine_init();
-    engine_run();
+	Engine *engine = malloc(sizeof(Engine));
+    engine_init(engine);
+    engine_run(engine);
+    /*
     engine_shutdown();
+    */
     return 0;
 }

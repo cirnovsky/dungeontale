@@ -15,5 +15,6 @@ typedef struct{
 
 extern Hitbox g_hitboxes[MAX_HITBOXES];
 
+
 #endif
 

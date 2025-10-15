@@ -15,6 +15,7 @@ Room *room_create(int height, int width, int x, int y) {
     room->y = y;
 	room->ports_n = 0;
 	room->ports = NULL;
+	room->explored = 0;
 
 	return room;
 }
