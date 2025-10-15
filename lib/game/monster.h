@@ -2,7 +2,8 @@
 #define MONSTER_H
 
 #include "../common.h"
-#include <ncurses.h>
+#include "core/texture.h"
+#include "core/ui.h"
 
 #define MAX_MONSTERS 20
 
@@ -37,7 +38,7 @@ extern Monster g_monsters[MAX_MONSTERS];
 
 void monsters_init(void);
 void monsters_update_all(void);
-void monsters_draw_all(WINDOW *win);
+void monsters_draw_all(WindowArea *win, texture *t, int x, int y);
 void monster_die(Monster *monster);
 void generate_monster_name(Monster *monster);
 

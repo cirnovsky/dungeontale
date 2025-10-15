@@ -1,11 +1,11 @@
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -Ilib -D_DEFAULT_SOURCE -D_XOPEN_SOURCE_EXTENDED -g
+CFLAGS = -Wall -Wextra -std=c99 -Ilib -D_DEFAULT_SOURCE -g $(shell pkg-config --cflags sdl2)
 
 ifeq ($(shell uname), Darwin)
-    LDFLAGS = -lncurses -lm
+    LDFLAGS = -lncurses -lm $(shell pkg-config --libs sdl2)
 else
-    LDFLAGS = -lncursesw -lm
+    LDFLAGS = -lncursesw -lm $(shell pkg-config --libs sdl2)
 endif
 
 # All sources except test.c and main.c

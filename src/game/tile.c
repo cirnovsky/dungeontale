@@ -4,24 +4,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Tile *tile_create(int code) {
+Tile *tile_create(int code, int fg, int bg) {
 	Tile *tile = malloc(sizeof(Tile));
     tile->is_visible = false;
     tile->is_explored = false;
-	tile_draw(tile, code);
-	tile_set_state(tile, TILE_ON);
+	tile_draw(tile, code, fg, bg);
 
 	return tile;
-}
-
-void tile_set_state(Tile *tile, int state) {
-	assert(tile != NULL);
-	tile->state = state;
-}
-
-int tile_get_state(Tile *tile) {
-	assert(tile != NULL);
-	return tile->state;
 }
 
 void tile_destroy(Tile *tile) {
@@ -31,14 +20,24 @@ void tile_destroy(Tile *tile) {
 	free(tile);
 }
 
-void tile_draw(Tile *tile, int code) {
+void tile_draw(Tile *tile, int code, int fg, int bg) {
 	assert(tile != NULL);
 	tile->code = code;
+	tile->fg = fg;
+	tile->bg = bg;
 }
 
 
-wchar_t tile_display(Tile *tile) {
+unsigned char tile_display(Tile *tile) {
 	assert(tile != NULL);
 	return LEGENDS[tile->code];
 }
 
+int tilefg(Tile *tile) {
+	assert(tile != NULL);
+	return tile->fg;
+}
+int tilebg(Tile *tile) {
+	assert(tile != NULL);
+	return tile->bg;
+}

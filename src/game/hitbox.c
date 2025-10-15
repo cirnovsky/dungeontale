@@ -41,9 +41,9 @@ void hitbox_update_all() {
     }
 
 }
-void hitbox_draw_all(WINDOW *win){
+void hitbox_draw_all(WindowArea *win, texture *t, int x, int y){
     Sprite hitbox_sprite = {
-        .symbol = L'*',
+        .symbol = 0x0f, // ☼
         .fg_color = COLOR_RED,
         .bg_color = -1,
         .attributes = A_NORMAL
@@ -64,7 +64,7 @@ void hitbox_draw_all(WINDOW *win){
                     int world_x = hb->x +k;
 
                     if (map_is_walkable(world_y, world_x)){
-                        renderer_draw_sprite(win, world_y + 1, world_x + 1, &hitbox_sprite);
+                        renderer_draw_sprite(win, t, world_y - x + 1, world_x - y + 1, &hitbox_sprite);
                     }
                 }
 

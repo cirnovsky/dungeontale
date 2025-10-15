@@ -7,7 +7,6 @@
 #define MAP_H
 
 
-#include <ncurses.h>
 #include "room.h"
 #include "corridor.h"
 
@@ -23,7 +22,7 @@ extern Map *g_world_map;
 
 Map *map_create(int rooms_n, int height, int width);
 void map_destroy(Map *map);
-void map_set(Map *map, int x, int y, int code);
+void map_set(Map *map, int x, int y, int code, int fg, int bg);
 Tile *map_get_tile(Map *map, int x, int y);
 void map_append_corridor(Map *map, Corridor *corridor);
 

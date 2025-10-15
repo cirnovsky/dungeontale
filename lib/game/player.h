@@ -20,7 +20,7 @@ typedef struct {
 extern Player player;
 
 void player_init(int, int );
-void player_draw(WINDOW *win);
+void player_draw(WindowArea *win, texture *t, int x, int y);
 void player_set_move_target(int ch);
 void player_update(int game_timer);
 void player_attack();

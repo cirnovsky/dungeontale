@@ -21,7 +21,7 @@ Map *map_create(int rooms_n, int height, int width) {
 	int i;
 
 	for (i = 0; i < height * width; ++i)
-		tiles[i] = tile_create(TILE_EMPTY);
+		tiles[i] = tile_create(TILE_EMPTY, COLOR_BLACK, COLOR_BLACK);
 
 	return map;
 }
@@ -59,7 +59,7 @@ void map_destroy(Map *map) {
 	free(map);
 }
 
-void map_set(Map *map, int x, int y, int code) {
+void map_set(Map *map, int x, int y, int code, int fg, int bg) {
 	assert(map != NULL);
 
 	int height = map->height, width = map->width;
@@ -69,7 +69,7 @@ void map_set(Map *map, int x, int y, int code) {
 
 	Tile *tile = map->tiles[x * width + y];
 
-	tile_draw(tile, code);
+	tile_draw(tile, code, fg, bg);
 }
 
 Tile *map_get_tile(Map *map, int x, int y) {
