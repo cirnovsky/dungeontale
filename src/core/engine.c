@@ -96,7 +96,7 @@ void engine_run(Engine *engine) {
 			}
 		}
 
-		SDL_Delay(30); // 30ms delay (equivalent to usleep(30000))
+		SDL_Delay(25); // 30ms delay (equivalent to usleep(30000))
 	}
 }
 
