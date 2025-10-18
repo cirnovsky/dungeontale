@@ -1,7 +1,7 @@
 #include "core/engine.h"
 
-int main() {
-	Engine *engine = malloc(sizeof(Engine));
+int main(int argc, char *argv[]) {
+    Engine *engine = malloc(sizeof(Engine));
     engine_init(engine);
     engine_run(engine);
     /*

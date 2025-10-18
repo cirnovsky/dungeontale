@@ -99,7 +99,7 @@ void monsters_update_all(void) {
             if (monster->move_cooldown <= 0){
 
                 if (monster->template->on_update) {
-                    monster->template->on_update(monster, &player); 
+                    monster->template->on_update(monster, (struct Player *)&player); 
                 }
                 monster->move_cooldown = monster->template->move_speed;
             }    
